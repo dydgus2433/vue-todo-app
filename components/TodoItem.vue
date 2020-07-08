@@ -14,19 +14,26 @@
       />
       <div class="item__actions">
         <button
-          @click="editedTodo">완료
+          @click="editedTodo">
+
+          <i class="material-icons">done</i>
         </button>
         <button
-          @click="offEditMode">취소
+          @click="offEditMode">
+
+          <i class="material-icons">clear</i>
         </button>
       </div>
     </div>
     <div class="item__inner item--normal" v-else>
-      <input
-        @click="updateTodo"
-        type="checkbox"
-        v-model="todo.done"
-      />
+      <label>
+        <input
+          @click="updateTodo"
+          type="checkbox"
+          v-model="todo.done"
+        />
+        <span class="icon"><i class="material-icons">check</i></span>
+      </label>
       <div class="item__title-wrap">
         <div class="item__title">
           {{todo.title}}
@@ -37,10 +44,14 @@
       </div>
       <div class="item_actions">
         <button
-          @click="onEditMode">수정
+          @click="onEditMode"
+          class="btn">
+          <i class="material-icons">edit</i>
         </button>
         <button
-          @click="deleteMode">삭제
+          @click="deleteMode"
+          class="btn btn--danger">
+          <i class="material-icons">delete</i>
         </button>
       </div>
 
@@ -116,24 +127,3 @@
     }
   }
 </script>
-
-<style lang="scss" scoped>
-  .todo-item {
-    margin-bottom: 10px;
-
-    .item__inner {
-      display: flex;
-    }
-
-    .item__date {
-      font-size: 12px;
-    }
-
-    &.done { // done이라는 클래스가 있어야지만 나오는 부분
-      .item__title {
-        text-decoration: line-through;
-      }
-    }
-  }
-
-</style>

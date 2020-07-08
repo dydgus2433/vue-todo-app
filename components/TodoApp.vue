@@ -17,11 +17,35 @@
         </button>
       </div>
 
-      <div class="actions">
-        <input
-          type="checkbox"
-          v-model="allDone">
-        <button @click="clearCompleted">완료된 항목 삭제</button>
+      <div class="actions clearfix">
+        <div class="float--left ">
+          <label>
+            <input
+              type="checkbox"
+              v-model="allDone"/>
+            <!--            span.icon>i.material-icons{done_all} 에밋 문법-->
+            <span class="icon"><i class="material-icons">done_all</i></span>
+
+          </label>
+        </div>
+        <div class="float--right clearfix">
+          <button @click="scrollToTop" class="btn float--left">
+            <span class="icon"><i class="material-icons">expand_less</i></span>
+
+          </button>
+          <button @click="scrollToBottom" class="btn float--left">
+
+            <span class="icon"><i class="material-icons">expand_more</i></span>
+
+          </button>
+
+          <button
+            @click="clearCompleted"
+            class="btn btn--danger  float--left">
+            <i class="material-icons">delete_sweep</i>
+
+          </button>
+        </div>
 
       </div>
 
@@ -36,7 +60,6 @@
         v-for="todo in filteredTodos"
       />
     </div>
-    <hr/>
     <div class="todo-app__creator">
       <todo-creator @create-todo="createTodo"/>
     </div>
@@ -52,6 +75,7 @@
   import _assign from 'lodash/assign'
   import _findIndex from 'lodash/findIndex'
   import _forEachRight from 'lodash/forEachRight'
+  import scrollTo from 'scroll-to'
   import TodoCreator from './TodoCreator'
   import TodoItem from './TodoItem'
 
@@ -73,10 +97,10 @@
     computed: {
       filteredTodos() {
         switch (this.filter) {
-          case "all" :
+          case 'all' :
           default :
             return this.todos
-          case "active" :
+          case 'active' :
             return this.todos.filter(todo => !todo.done)
           case 'completed' :
             return this.todos.filter(todo => todo.done)
@@ -131,13 +155,13 @@
           done: false
 
         }
-        //Create DB
+        // Create DB
         this.db
           .get('todos') // lodash
           .push(newTodo) // lodash
           .write() // lowdb
 
-        //Create Client
+        // Create Client
         this.todos.push(newTodo)
       },
       updateTodo(todo, value) {
@@ -149,7 +173,6 @@
 
         const foundTodo = _find(this.todos, {id: todo.id})
         _assign(foundTodo, value)
-
       },
       deleteTodo(todo) {
         this.db
@@ -159,9 +182,7 @@
 
         // _remove(this.todos, {id : todo.id}) //화면갱신이 안됨
         const fountIndex = _findIndex(this.todos, {id: todo.id})
-        this.$delete(this.todos, fountIndex) //한계를 극복하기위해 사용하지만 거의 사용하지 말아야함
-
-
+        this.$delete(this.todos, fountIndex) // 한계를 극복하기위해 사용하지만 거의 사용하지 말아야함
       },
       changeFilter(filter) {
         this.filter = filter
@@ -174,27 +195,25 @@
             todo.done = checked
           })
           .write()
-        //Local Todos 갱신
+        // Local Todos 갱신
         // this.todos.forEach(todo => {
         //   todo.done = checked
         // })
 
-        //실무적으로 api 반환되면
-        //일반적으론 원격에 저장되지만 여기에선 그대로 수정하면 안됨
-        //일반적인 경우에는 그냥 할당하면 됨. 현재는 참조관계가 발생하면 안되는 구조기 때문에 깊은 복사필요
+        // 실무적으로 api 반환되면
+        // 일반적으론 원격에 저장되지만 여기에선 그대로 수정하면 안됨
+        // 일반적인 경우에는 그냥 할당하면 됨. 현재는 참조관계가 발생하면 안되는 구조기 때문에 깊은 복사필요
         this.todos = _cloneDeep(newTodos)
-
-
       },
       clearCompleted() {
-        //앞에서 지워서 비정상작동
+        // 앞에서 지워서 비정상작동
         // this.todos.forEach(todo => {
         //   if(todo.done){
         //     this.deleteTodo(todo)
         //   }
         // })
 
-        //뒤에서 부터 삭제하면 정상작동(일반론)
+        // 뒤에서 부터 삭제하면 정상작동(일반론)
         this.todos.reduce((list, todo, index) => {
           if (todo.done) {
             list.push(index)
@@ -211,16 +230,22 @@
             this.deleteTodo(todo)
           }
         })
-
+      },
+      scrollToTop() {
+        scrollTo(0, 0, {
+          ease: 'linear'
+        })
+      },
+      scrollToBottom() {
+        scrollTo(0, document.body.scrollHeight, {
+          ease: 'linear'
+        })
       }
     }
 
   }
 
 </script>
-<style lang="scss" scoped>
-  button.active {
-    font-weight: bold;
-  }
-
+<style lang="scss">
+  @import "../scss/style"; //앞에 '_'가 동작하지않음
 </style>
