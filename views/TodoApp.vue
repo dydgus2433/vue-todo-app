@@ -3,18 +3,13 @@
     <div class="todo-app__actions">
       <div class="filters">
 
-        <button
-          :class="{active : filter === 'all' }"
-          @click="changeFilter('all')">모든 항목 ({{total}})
-        </button>
-        <button
-          :class="{active : filter === 'active' }"
-          @click="changeFilter('active')">해야 할 항목 ({{activeCount}})
-        </button>
-        <button
-          :class="{active : filter === 'completed' }"
-          @click="changeFilter('completed')">완료된 항목 ({{completedCount}})
-        </button>
+        <router-link tag="button" to="all">
+          모든 항목 ({{total}})
+        </router-link>
+        <router-link tag="button" to="active">해야 할 항목 ({{activeCount}})
+        </router-link>
+        <router-link tag="button" to="completed">완료된 항목 ({{completedCount}})
+        </router-link>
       </div>
 
       <div class="actions clearfix">
@@ -76,8 +71,8 @@
   import _findIndex from 'lodash/findIndex'
   import _forEachRight from 'lodash/forEachRight'
   import scrollTo from 'scroll-to'
-  import TodoCreator from './TodoCreator'
-  import TodoItem from './TodoItem'
+  import TodoCreator from '~/components/TodoCreator'
+  import TodoItem from '~/components/TodoItem'
 
   // import _ from 'lodash' //전부다 가져오면 용량이 원하는 기능에 비해 너무 큼
   // _.cloneDeep()
@@ -90,13 +85,13 @@
     data() {
       return {
         db: null, // 아직 무엇을 넣을지 정해지않을때 null
-        todos: [],
-        filter: 'all' // 모든 항목
+        todos: []
+        // filter: 'all' // 모든 항목
       }
     },
     computed: {
       filteredTodos() {
-        switch (this.filter) {
+        switch (this.$route.params.id) {
           case 'all' :
           default :
             return this.todos
@@ -184,9 +179,6 @@
         const fountIndex = _findIndex(this.todos, {id: todo.id})
         this.$delete(this.todos, fountIndex) // 한계를 극복하기위해 사용하지만 거의 사용하지 말아야함
       },
-      changeFilter(filter) {
-        this.filter = filter
-      },
       completeAll(checked) {
         // DB 갱신
         const newTodos = this.db
@@ -247,5 +239,9 @@
 
 </script>
 <style lang="scss">
-  @import "../scss/style"; //앞에 '_'가 동작하지않음
+  @import "scss/style"; // _style.scss 앞에 '_'가 동작하지않음
+  .filters button.router-link-exact-active {
+    background: royalblue;
+    color: white;
+  }
 </style>

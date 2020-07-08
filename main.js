@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import App from './App'
+import router from './router' // index는 생략이 가능함
 
 // eslint-disable-next-line
 new Vue({
   el: '#app',
+  router,
   render: h => h(App) // https://css-tricks.com/what-does-the-h-stand-for-in-vues-render-method/
 })
 /*

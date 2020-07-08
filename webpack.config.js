@@ -10,7 +10,11 @@ module.exports = (env, opts) => {
   const config = {
     // 가져오기 확장자 생략 가능
     resolve: {
-      extensions: ['.js', '.vue']
+      extensions: ['.js', '.vue'],
+      alias: {
+        '~': path.resolve(__dirname),// ~를 통해서 절대경로를 만들어낼 수 있음
+        'scss': path.resolve(__dirname, './scss/')
+      }
     },
     // 파일을 읽어들이기 시작하는 진입
     // `__dirname`은 현재 파일의 위치를 알려주는 NodeJS 전역 변수
@@ -69,7 +73,7 @@ module.exports = (env, opts) => {
       new CopyPlugin([
         {
           from: 'assets/',
-          to: ''
+          to: '.'
         }
       ])
     ]
