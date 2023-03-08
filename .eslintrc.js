@@ -1,36 +1,25 @@
 module.exports = {
   root: true,
-  parserOptions: {
-    parser: 'babel-eslint',
-    ecmaVersion: 2015,
-    sourceType: 'module'
-  },
   env: {
-    browser: true,
-    node: true
+    node: true,
   },
-  extends: [
-    // https://github.com/standard/eslint-config-standard
-    'standard',
-    // https://eslint.vuejs.org/rules/
-    // 'plugin:vue/base'
-    'plugin:vue/essential'
-    // 'plugin:vue/strongly-recommended'
-    // 'plugin:vue/recommended'
-  ],
-  plugins: [
-    'vue'
-  ],
+  extends: ['eslint:recommended', 'plugin:vue/recommended'],
   rules: {
-    // 예외 규칙을 추가할 수 있습니다
-    'vue/html-self-closing': ['error', {
-      'html': {
-        'void': 'always',
-        'normal': 'always',
-        'component': 'always'
+    'no-console': 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'vue/multi-word-component-names': 'off',
+    'vue/no-unused-components': 'warn',
+    'no-undef': 'warn',
+    'no-unused-vars': 'off',
+    'prefer-const': [
+      'error',
+      {
+        destructuring: 'any',
+        ignoreReadBeforeAssign: false,
       },
-      'svg': 'always',
-      'math': 'always'
-    }]
-  }
-}
+    ],
+  },
+  globals: {
+    _: false,
+  },
+};

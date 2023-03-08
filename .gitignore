@@ -10,3 +10,15 @@ yarn-error.log
 *.ntvs*
 *.njsproj
 *.sln
+# dependencies
+/node_modules
+
+# yarn cache
+.yarn-cache
+
+# production build
+/build
+
+# other artifacts
+*.log
+.DS_Store
