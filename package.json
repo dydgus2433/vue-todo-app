@@ -2,23 +2,22 @@
   "name": "vue-todo-app",
   "version": "1.0.0",
   "description": "Vue Todo list app",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/dydgus2433/vue-todo-app.git"
-  },
+  "repository": "https://github.com/dydgus2433/vue-todo-app.git",
   "main": "index.js",
   "browserslist": [
     "last 2 versions",
     "ie >= 10"
   ],
   "scripts": {
-    "dev": "webpack-dev-server --mode development",
-    "build": "webpack --mode production",
-    "lint": "eslint --ext .js,.vue .",
-    "lint:fix": "eslint --fix --ext .js,.vue ."
+    "serve": "vue-cli-service serve",
+    "serve:local": "vue-cli-service serve --mode local",
+    "dev": "yarn webpack-dev-server --mode development",
+    "build": "yarn webpack --mode production",
+    "lint": "yarn eslint --ext .js,.vue .",
+    "lint:fix": "yarn eslint --fix --ext .js,.vue ."
   },
   "keywords": [],
-  "author": "HEROPY",
+  "author": "LYH",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -37,25 +36,26 @@
     "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^5.2.3",
     "html-webpack-plugin": "^5.5.0",
-    "node-sass": "^8.0.0",
+    "node-sass": "4",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.3.1",
     "vue-loader": "^15.9.3",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.43.0",
+    "webpack": "^5.20.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
     "@babel/polyfill": "^7.10.4",
-    "crypto-random-string": "^3.2.0",
+    "@vue/cli-service": "^5.0.8",
+    "crypto-random-string": "^5.0.0",
     "dayjs": "^1.8.29",
     "lodash": "^4.17.21",
     "lowdb": "^1.0.0",
     "scroll-to": "0.0.2",
-    "vue": "^2.6.11",
-    "vue-router": "^3.3.4"
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0"
   }
 }
