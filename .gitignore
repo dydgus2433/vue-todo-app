@@ -22,3 +22,7 @@ yarn-error.log
 # other artifacts
 *.log
 .DS_Store
+
+.yarn
+.yarnrc
+.yarnrc.yml
