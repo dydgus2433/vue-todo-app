@@ -2,13 +2,23 @@
   <div class="todo-app">
     <div class="todo-app__actions">
       <div class="filters">
-
-        <router-link tag="button" to="all">
-          모든 항목 ({{total}})
+        <router-link
+          tag="button"
+          to="all"
+        >
+          모든 항목 ({{ total }})
         </router-link>
-        <router-link tag="button" to="active">해야 할 항목 ({{activeCount}})
+        <router-link
+          tag="button"
+          to="active"
+        >
+          해야 할 항목 ({{ activeCount }})
         </router-link>
-        <router-link tag="button" to="completed">완료된 항목 ({{completedCount}})
+        <router-link
+          tag="button"
+          to="completed"
+        >
+          완료된 항목 ({{ completedCount }})
         </router-link>
       </div>
 
@@ -17,46 +27,47 @@
           <label>
             <input
               v-model="allDone"
-              type="checkbox"/>
-            <!--            span.icon>i.material-icons{done_all} 에밋 문법-->
+              type="checkbox"
+            >
             <span class="icon"><i class="material-icons">done_all</i></span>
 
           </label>
         </div>
         <div class="float--right clearfix">
-          <button class="btn float--left" @click="scrollToTop">
+          <button
+            class="btn float--left"
+            @click="scrollToTop"
+          >
             <span class="icon"><i class="material-icons">expand_less</i></span>
-
           </button>
-          <button class="btn float--left" @click="scrollToBottom">
-
+          <button
+            class="btn float--left"
+            @click="scrollToBottom"
+          >
             <span class="icon"><i class="material-icons">expand_more</i></span>
-
           </button>
 
           <button
             class="btn btn--danger  float--left"
-            @click="clearCompleted">
+            @click="clearCompleted"
+          >
             <i class="material-icons">delete_sweep</i>
-
           </button>
         </div>
-
       </div>
-
     </div>
 
     <div class="todo-app__list">
       <todo-item
+        v-for="todo in filteredTodos"
         :key="todo.id"
         :todo="todo"
-        v-for="todo in filteredTodos"
         @delete-todo="deleteTodo"
         @update-todo="updateTodo"
       />
     </div>
     <div class="todo-app__creator">
-      <todo-creator @create-todo="createTodo"/>
+      <todo-creator @create-todo="createTodo" />
     </div>
   </div>
 </template>
@@ -86,7 +97,6 @@
       return {
         db: null, // 아직 무엇을 넣을지 정해지않을때 null
         todos: []
-        // filter: 'all' // 모든 항목
       }
     },
     computed: {
@@ -108,7 +118,7 @@
         return this.todos.filter(todo => !todo.done).length
       },
       completedCount() {
-        return this.total - this.activeCount
+        return this.total  - this.activeCount
       },
       allDone: {
         get() {
@@ -155,9 +165,6 @@
           .get('todos') // lodash
           .push(newTodo) // lodash
           .write() // lowdb
-
-        // Create Client
-        this.todos.push(newTodo)
       },
       updateTodo(todo, value) {
         this.db
@@ -165,19 +172,12 @@
           .find({id: todo.id})
           .assign(value)
           .write()
-
-        const foundTodo = _find(this.todos, {id: todo.id})
-        _assign(foundTodo, value)
       },
       deleteTodo(todo) {
         this.db
           .get('todos')
           .remove({id: todo.id})
           .write()
-
-        _remove(this.todos, {id : todo.id}) //화면갱신이 안됨
-        // const fountIndex = _findIndex(this.todos, {id: todo.id})
-        // this.$delete(this.todos, fountIndex) // 한계를 극복하기위해 사용하지만 거의 사용하지 말아야함
       },
       completeAll(checked) {
         // DB 갱신
@@ -187,35 +187,8 @@
             todo.done = checked
           })
           .write()
-        // Local Todos 갱신
-        // this.todos.forEach(todo => {
-        //   todo.done = checked
-        // })
-
-        // 실무적으로 api 반환되면
-        // 일반적으론 원격에 저장되지만 여기에선 그대로 수정하면 안됨
-        // 일반적인 경우에는 그냥 할당하면 됨. 현재는 참조관계가 발생하면 안되는 구조기 때문에 깊은 복사필요
-        this.todos = _cloneDeep(newTodos)
       },
       clearCompleted() {
-        // 앞에서 지워서 비정상작동
-        // this.todos.forEach(todo => {
-        //   if(todo.done){
-        //     this.deleteTodo(todo)
-        //   }
-        // })
-
-        // 뒤에서 부터 삭제하면 정상작동(일반론)
-        this.todos.reduce((list, todo, index) => {
-          if (todo.done) {
-            list.push(index)
-          }
-          return list
-        }, [])
-          .reverse()
-          .forEach(index => {
-            this.deleteTodo(this.todos[index])
-          })
 
         _forEachRight(this.todos, todo => {
           if (todo.done) {
