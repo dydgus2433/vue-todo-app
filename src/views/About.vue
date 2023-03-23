@@ -6,5 +6,4 @@
       <h2>010-1233-4343</h2>
     </div>
   </section>
-
 </template>

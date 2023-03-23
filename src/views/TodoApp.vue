@@ -83,6 +83,7 @@ import _forEachRight from "lodash/forEachRight";
 import scrollTo from "scroll-to";
 import TodoCreator from "@/components/TodoCreator";
 import TodoItem from "@/components/TodoItem";
+import { objectMethod } from "@babel/types";
 
 // import _ from 'lodash' //전부다 가져오면 용량이 원하는 기능에 비해 너무 큼
 // _.cloneDeep()
@@ -133,6 +134,7 @@ export default {
   },
   methods: {
     initDB() {
+      /**  작동하는코드
       const adapter = new LocalStorage("todo-app"); // DB
       this.db = lowdb(adapter); // 연결이 되는 순간 로우디비가 로컬스토리지에 있는 todo-app을 반환합니다
 
@@ -149,6 +151,8 @@ export default {
           })
           .write(); // write 작성하겠다.
       }
+       */
+      this.todos = [];
     },
     createTodo(title) {
       const newTodo = {
@@ -158,26 +162,41 @@ export default {
         updatedAt: new Date(),
         done: false,
       };
+      this.todos.push(newTodo);
       // Create DB
-      this.db
-        .get("todos") // lodash
-        .push(newTodo) // lodash
-        .write(); // lowdb
+      // this.db
+      //   .get("todos") // lodash
+      //   .push(newTodo) // lodash
+      //   .write(); // lowdb
     },
     updateTodo(todo, value) {
-      this.db.get("todos").find({ id: todo.id }).assign(value).write();
+      const index = this.todos.findIndex((item) => {
+        return item.id === todo.id;
+      });
+      const obj = this.todos[index];
+      obj.title = value.title ? value.title : obj.title;
+      obj.updatedAt = value.updatedAt ? value.updatedAt : obj.updatedAt;
+      this.todos[index] = obj;
     },
     deleteTodo(todo) {
-      this.db.get("todos").remove({ id: todo.id }).write();
+      debugger;
+      const index = this.todos.findIndex((item) => {
+        return item.id === todo.id;
+      });
+      if (index > -1) this.todos.splice(index, 1);
+      // this.db.get("todos").remove({ id: todo.id }).write();
     },
     completeAll(checked) {
+      const newTodos = this.todos.forEach((todo) => {
+        todo.done = checked;
+      });
       // DB 갱신
-      const newTodos = this.db
-        .get("todos")
-        .forEach((todo) => {
-          todo.done = checked;
-        })
-        .write();
+      // const newTodos = this.db
+      //   .get("todos")
+      //   .forEach((todo) => {
+      //     todo.done = checked;
+      //   })
+      //   .write();
     },
     clearCompleted() {
       _forEachRight(this.todos, (todo) => {
