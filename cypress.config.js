@@ -3,6 +3,12 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   experimentalStudio: true,
+  reporterOptions: {
+    reportDir: "cypress/results",
+    overwrite: false,
+    html: false,
+    json: true,
+  },
   e2e: {
     setupNodeEvents(on, config) {
       const envName = config.env.mode;
