@@ -13,8 +13,6 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       const envName = config.env.mode;
       config.env = dotenv.config({ path: `.env.${envName}` }).parsed;
-
-      console.log(config);
       config.baseUrl = config.env.BASE_URL;
       return config;
     },

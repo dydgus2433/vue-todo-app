@@ -72,8 +72,6 @@
 </template>
 
 <script>
-import lowdb from "lowdb"; // 로우디비 자체를 어댑터와 연결을 해줘야함
-import LocalStorage from "lowdb/adapters/LocalStorage";
 import cryptoRandomString from "crypto-random-string";
 import _cloneDeep from "lodash/cloneDeep";
 import _find from "lodash/find";
@@ -83,10 +81,6 @@ import _forEachRight from "lodash/forEachRight";
 import scrollTo from "scroll-to";
 import TodoCreator from "@/components/TodoCreator";
 import TodoItem from "@/components/TodoItem";
-import { objectMethod } from "@babel/types";
-
-// import _ from 'lodash' //전부다 가져오면 용량이 원하는 기능에 비해 너무 큼
-// _.cloneDeep()
 
 export default {
   components: {
@@ -134,24 +128,6 @@ export default {
   },
   methods: {
     initDB() {
-      /**  작동하는코드
-      const adapter = new LocalStorage("todo-app"); // DB
-      this.db = lowdb(adapter); // 연결이 되는 순간 로우디비가 로컬스토리지에 있는 todo-app을 반환합니다
-
-      console.log(this.db); // lodash로 읽고 쓰고 하기 좋게 하는 라이브러리
-
-      const hasTodos = this.db.has("todos").value(); // value를 붙여야 lodach로 인한 값을 가져올 수 있음
-      if (hasTodos) {
-        this.todos = this.db.get("todos").value();
-      } else {
-        // 로컬 디비 초기화
-        this.db // this.db undefined + todos 병합 하는 코드
-          .defaults({
-            todos: [], // Collection
-          })
-          .write(); // write 작성하겠다.
-      }
-       */
       this.todos = [];
     },
     createTodo(title) {
@@ -163,11 +139,6 @@ export default {
         done: false,
       };
       this.todos.push(newTodo);
-      // Create DB
-      // this.db
-      //   .get("todos") // lodash
-      //   .push(newTodo) // lodash
-      //   .write(); // lowdb
     },
     updateTodo(todo, value) {
       const index = this.todos.findIndex((item) => {
@@ -184,19 +155,11 @@ export default {
         return item.id === todo.id;
       });
       if (index > -1) this.todos.splice(index, 1);
-      // this.db.get("todos").remove({ id: todo.id }).write();
     },
     completeAll(checked) {
       const newTodos = this.todos.forEach((todo) => {
         todo.done = checked;
       });
-      // DB 갱신
-      // const newTodos = this.db
-      //   .get("todos")
-      //   .forEach((todo) => {
-      //     todo.done = checked;
-      //   })
-      //   .write();
     },
     clearCompleted() {
       _forEachRight(this.todos, (todo) => {

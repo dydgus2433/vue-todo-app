@@ -14,17 +14,3 @@
     </div>
   </section>
 </template>
-
-<script>
-// export default {
-//   methods : {
-//     toAbout(){
-//       this.$router.push('/about')
-//     },
-//     toTodoApp(){
-//       this.$router.push('/todos')
-//     }
-//   }
-//
-// }
-</script>
